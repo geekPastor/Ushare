@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "201332812316",
+    "project_id": "tolobela-congo",
+    "storage_bucket": "tolobela-congo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201332812316:android:38873dd2065838586e4dd9",
+        "android_client_info": {
+          "package_name": "com.chrinovicmm.tolobelacongo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvV3wHxZCxNvHtj2VnMiIlsMTxPLUWC1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
