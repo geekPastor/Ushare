@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import com.chrinovicmm.tolobelacongo.R
-import com.chrinovicmm.tolobelacongo.domain.model.SignInResul
+import com.chrinovicmm.tolobelacongo.domain.model.SignInResult
 import com.chrinovicmm.tolobelacongo.domain.model.User
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
@@ -43,13 +43,13 @@ class GoogleAuthUiHelper(
         return result?.pendingIntent?.intentSender
     }
 
-    suspend fun getSignInResultFromIntentAndSignIn(intent: Intent): SignInResul {
+    suspend fun getSignInResultFromIntentAndSignIn(intent: Intent): SignInResult {
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
         val googleCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
         return  try {
             val user = auth.signInWithCredential(googleCredential).await().user
-            SignInResul(
+            SignInResult(
                 data = User(
                     user!!.uid,
                     user.displayName,
@@ -60,7 +60,7 @@ class GoogleAuthUiHelper(
         }catch (e : Exception){
             e.printStackTrace()
             if (e is CancellationException) throw e
-            SignInResul(null, e.message)
+            SignInResult(null, e.message)
         }
     }
 }

@@ -27,5 +27,7 @@ class BlogRepository {
         }else null
 
         emit(Result.Success(user))
+    }.catch { error->
+        emit(Result.Error(error))
     }
 }

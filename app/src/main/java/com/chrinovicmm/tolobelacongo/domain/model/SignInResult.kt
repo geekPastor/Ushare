@@ -1,6 +1,6 @@
 package com.chrinovicmm.tolobelacongo.domain.model
 
-data class SignInResul(
+data class SignInResult(
     val data : User?,
     val errorMessage: String?
 )
