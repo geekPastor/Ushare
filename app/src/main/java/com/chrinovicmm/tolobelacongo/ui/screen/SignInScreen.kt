@@ -1,6 +1,5 @@
 package com.chrinovicmm.tolobelacongo.ui.screen
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +20,7 @@ import com.chrinovicmm.tolobelacongo.domain.model.User
 @Composable
 fun SignInScreen(
     isLoading: Boolean,
-    currentUser: User,
+    currentUser: User?,
     onSignInClick: ()->Unit
 ){
     Box(
