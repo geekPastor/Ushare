@@ -80,4 +80,11 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun resetSignInState(){
+        uiState.value = uiState.value.copy(
+            isSignInSuccessfull = false,
+            signInError = null
+        )
+    }
 }

@@ -43,8 +43,6 @@ class MainActivity : ComponentActivity() {
                     val uiState = viewModel.uiState.value
                     
                     NavHost(navController = navController, startDestination =  "signin"){
-
-
                         composable("signin"){
                             val launcher = rememberLauncherForActivityResult(
                                 contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -70,6 +68,7 @@ class MainActivity : ComponentActivity() {
                             LaunchedEffect(key1 = uiState.isSignInSuccessfull){
                                 if (uiState.isSignInSuccessfull){
                                     navController.navigate("home")
+                                    viewModel.resetSignInState()
                                 }
                             }
 

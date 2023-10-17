@@ -8,8 +8,9 @@ import com.chrinovicmm.tolobelacongo.util.Result
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class BlogRepository {
+class BlogRepository @Inject constructor() {
     suspend fun signOut(oneTapClient: SignInClient) = flow {
         emit(Result.Loading)
         oneTapClient.signOut().await()
