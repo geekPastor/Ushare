@@ -62,7 +62,9 @@ fun HomeScreen(
                             .padding(10.dp)
                             .size(40.dp)
                             .clip(CircleShape)
-                            .clickable { }
+                            .clickable {
+                                isDropdownMenuExpanded = !isDropdownMenuExpanded
+                            }
                     )
 
                     DropdownMenu(expanded = isDropdownMenuExpanded, onDismissRequest = { isDropdownMenuExpanded = false }) {

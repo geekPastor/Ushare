@@ -18,6 +18,10 @@ class MainViewModel @Inject constructor(
 ) : ViewModel(){
     val uiState = mutableStateOf(UiState())
 
+    init {
+        getSignedUser()
+    }
+
     fun onSignInResult(result: SignInResult){
         uiState.value = uiState.value.copy(
             isSignInSuccessfull = result.data!= null,

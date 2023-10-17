@@ -12,7 +12,20 @@
           "package_name": "com.chrinovicmm.tolobelacongo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "201332812316-980ojeq53qqtatthl7gl6rsprdlhpfbs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chrinovicmm.tolobelacongo",
+            "certificate_hash": "e863285194a4c6fa75350dae988f773dcdfff505"
+          }
+        },
+        {
+          "client_id": "201332812316-pc89vuap4brjkflo2vbdnp4acl7agirh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCvV3wHxZCxNvHtj2VnMiIlsMTxPLUWC1Y"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201332812316-pc89vuap4brjkflo2vbdnp4acl7agirh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
