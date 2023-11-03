@@ -46,8 +46,8 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "RDC Mon pays",
-                        fontSize = 25.sp,
+                        text = "Tolobela Congo",
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 },
