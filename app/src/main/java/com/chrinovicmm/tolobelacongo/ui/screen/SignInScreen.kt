@@ -1,8 +1,10 @@
 package com.chrinovicmm.tolobelacongo.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,11 +39,7 @@ fun SignInScreen(
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            /*Icon(
-                imageVector = Icons.Filled.Star,
-                contentDescription = null,
-                modifier = Modifier.size(180.dp)
-            )*/
+
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = null,
@@ -49,12 +47,21 @@ fun SignInScreen(
             )
             if (isLoading || currentUser == null){
                 Button(onClick = onSignInClick) {
-                    Text(
-                        text = "Se connecter"
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Image(
+                            painter = painterResource(R.drawable.login_icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(30.dp)
+                        )
+                        Text(
+                            text = "Se connecter avec Google"
+                        )
+                    }
                 }
             }
         }
     }
-
 }
