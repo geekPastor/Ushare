@@ -52,7 +52,7 @@ fun HomeScreen(
     currentUser: User?,
     blogs : List<Blog>,
     signOut : ()->Unit,
-    navigateToBlogDetailsScreen: (Blog)-> Unit
+    NavigateToBlogDetailsScreen: (Blog)-> Unit
 ){
 
     var isDropdownMenuExpanded by remember {
@@ -160,8 +160,8 @@ fun HomeScreen(
                 ){
                     items(blogs){blog->
                         BlogItemUI(
-                            blog = blog, blogDetailsScreen = {
-                                navigateToBlogDetailsScreen(blog)
+                            blog = blog, BlogDetailsScreen = {
+                                NavigateToBlogDetailsScreen(blog)
                             }
                         )
                     }

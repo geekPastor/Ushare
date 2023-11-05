@@ -36,14 +36,14 @@ import java.util.Locale
 @Composable
 fun BlogItemUI(
     blog: Blog,
-    blogDetailsScreen: ()->Unit
+    BlogDetailsScreen: ()->Unit
 ){
     Row(
       modifier = Modifier
           .padding(8.dp)
           .fillMaxWidth()
           .clickable {
-              blogDetailsScreen()
+              BlogDetailsScreen()
           },
         verticalAlignment = Alignment.CenterVertically
     ){

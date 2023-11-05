@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.chrinovicmm.tolobelacongo.ui.screen.HomeScreen
 import com.chrinovicmm.tolobelacongo.ui.screen.SignInScreen
 import com.chrinovicmm.tolobelacongo.ui.theme.TolobelaCongoTheme
@@ -97,8 +98,28 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("signin"){
                                         popUpTo(0)
                                     }
+                                },
+                                NavigateToBlogDetailsScreen = {blog ->
+                                    val
+                                    navController.navigate(
+                                        "blog_details"
+                                    )
                                 }
+
                             )
+                        }
+
+                        composable(
+                            route= "blog_details?id={id}?title={title}?content={content}?username={username}?thumbnail={thumbnail}",
+                            arguments = listOf(
+                                navArgument(name = "id", builder = {nullable = true}),
+                                navArgument(name = "title", builder = {nullable = true}),
+                                navArgument(name = "content", builder = {nullable = true}),
+                                navArgument(name = "username", builder = {nullable = true}),
+                                navArgument(name = "thumbnail", builder = {nullable = true})
+                            )
+                        ){
+
                         }
                     }
                 }
