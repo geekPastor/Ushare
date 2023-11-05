@@ -91,6 +91,7 @@ class MainActivity : ComponentActivity() {
                         composable("home"){
                             HomeScreen(
                                 currentUser = uiState.currentUser,
+                                blogs = uiState.blogs,
                                 signOut = {
                                     viewModel.signOut(oneTapClient)
                                     navController.navigate("signin"){

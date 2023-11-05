@@ -4,23 +4,29 @@ import android.app.Notification.Action
 import android.graphics.drawable.Icon
 import android.net.wifi.hotspot2.pps.HomeSp
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -41,12 +47,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chrinovicmm.tolobelacongo.R
+import com.chrinovicmm.tolobelacongo.domain.model.Blog
 import com.chrinovicmm.tolobelacongo.domain.model.User
+import com.chrinovicmm.tolobelacongo.ui.theme.TolobelaCongoTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     currentUser: User?,
+    blogs : List<Blog>,
     signOut : ()->Unit
 ){
 
@@ -127,6 +136,41 @@ fun HomeScreen(
                     }
                 }
             )
+
+            if (blogs.isEmpty()){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(200.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.empty),
+                            contentDescription = null
+                        )
+
+                        Text(
+                            text = "Pas d'avis disponible",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            } else{
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
+                ){
+                    items(blogs){blog->
+                        BlogItemUI(
+                            blog, {}
+                        )
+                    }
+
+                }
+
+            }
         }
     }
 }
@@ -134,5 +178,11 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPrview(){
-    //HomeScreen(currentUser = null)
+    TolobelaCongoTheme{
+        HomeScreen(
+            currentUser = null,
+            blogs = emptyList()
+        ){}
+
+    }
 }
