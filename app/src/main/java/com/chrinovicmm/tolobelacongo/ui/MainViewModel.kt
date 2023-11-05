@@ -146,4 +146,18 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun onDeleteBlog(id: String){
+        viewModelScope.launch {
+            repository.deleteBlog(id).collect{result->
+                when(result){
+                    is Result.Loading->{
+                        uiState.value = uiState.value.copy(isLoading = true)
+                    } else->{
+                    uiState.value = uiState.value.copy(isLoading = false)
+                    }
+                }
+            }
+        }
+    }
 }
