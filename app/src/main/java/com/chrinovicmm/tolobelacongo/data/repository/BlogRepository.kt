@@ -20,6 +20,8 @@ class BlogRepository @Inject constructor(
     private var blogsRef : CollectionReference,
     private var storageRef : StorageReference
 ) {
+
+    //Signout users
     suspend fun signOut(oneTapClient: SignInClient) = flow {
         emit(Result.Loading)
         oneTapClient.signOut().await()
@@ -29,6 +31,7 @@ class BlogRepository @Inject constructor(
         emit(Result.Error(error))
     }
 
+    //signed in users
     fun getSignedUser() = flow {
         emit(Result.Loading)
         val firebaseCreateUser = Firebase.auth.currentUser
@@ -41,6 +44,10 @@ class BlogRepository @Inject constructor(
         emit(Result.Error(error))
     }
 
+
+
+
+    //get(read) blog item
     fun getBlogs() = callbackFlow {
         val snapshotListener = blogsRef.orderBy("createdDate")
             .addSnapshotListener{snapshot, error->
@@ -56,6 +63,8 @@ class BlogRepository @Inject constructor(
         }
     }
 
+
+    //create blog item
     fun addBlog(
         title: String,
         content: String,
@@ -85,6 +94,7 @@ class BlogRepository @Inject constructor(
         emit(Result.Error(error))
     }
 
+    //update bolg item
     fun updateBlog(id: String, title: String, content: String, thumbnail: Uri) = flow {
         emit(Result.Loading)
 
@@ -101,6 +111,7 @@ class BlogRepository @Inject constructor(
     }
 
 
+        //delete Blog item
     fun deleteBlog(id: String) = flow {
         emit(Result.Loading)
 
