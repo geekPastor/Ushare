@@ -24,6 +24,7 @@ import com.chrinovicmm.tolobelacongo.util.GoogleAuthUiHelper
 import com.google.android.gms.auth.api.identity.SignInClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 import javax.inject.Inject
 
 
@@ -100,9 +101,12 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                                 NavigateToBlogDetailsScreen = {blog ->
-                                    val
+                                    val encodeUrl = URLEncoder.encode(blog.thumbnail, "UTF-8")
                                     navController.navigate(
-                                        "blog_details"
+                                        "blog_details?id=${blog.id}?title=${blog.title}" +
+                                                "?content=${blog.content}" +
+                                                "?username=${uiState.currentUser}" +
+                                                "?thumbnail=$encodeUrl"
                                     )
                                 }
 
@@ -110,7 +114,8 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            route= "blog_details?id={id}?title={title}?content={content}?username={username}?thumbnail={thumbnail}",
+                            route= "blog_details?id={id}?title={title}?content={content}" +
+                                    "?username={username}?thumbnail={thumbnail}",
                             arguments = listOf(
                                 navArgument(name = "id", builder = {nullable = true}),
                                 navArgument(name = "title", builder = {nullable = true}),
