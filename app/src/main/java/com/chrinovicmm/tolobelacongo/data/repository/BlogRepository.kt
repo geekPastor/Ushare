@@ -1,5 +1,7 @@
 package com.chrinovicmm.tolobelacongo.data.repository
 
+import android.net.Uri
+import com.chrinovicmm.tolobelacongo.domain.model.Blog
 import com.chrinovicmm.tolobelacongo.domain.model.User
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.ktx.auth
@@ -7,6 +9,7 @@ import com.google.firebase.ktx.Firebase
 import com.chrinovicmm.tolobelacongo.util.Result
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -38,7 +41,73 @@ class BlogRepository @Inject constructor(
         emit(Result.Error(error))
     }
 
-    /*fun getBlogs() = callbackFlow {
-        val snapshotListener = blogsRef.orderBy()
-    }*/
+    fun getBlogs() = callbackFlow {
+        val snapshotListener = blogsRef.orderBy("createdDate")
+            .addSnapshotListener{snapshot, error->
+                val result = if (snapshot != null){
+                    Result.Success(snapshot.toObjects(Blog::class.java))
+                } else{
+                    Result.Error(error!!)
+                }
+                trySend(result)
+            }
+        awaitClose{
+            snapshotListener.remove()
+        }
+    }
+
+    fun addBlog(
+        title: String,
+        content: String,
+        thumbnail: Uri,
+        user: User
+    ) = flow{
+        emit(Result.Loading)
+        val id = blogsRef.document().id
+
+        val imageStoragRef = storageRef.child("images/$id.jpg")
+        val downloadUrl =  imageStoragRef.putFile(thumbnail).await().storage.downloadUrl.await()
+
+        val blog = Blog(
+            id = id,
+            title = title,
+            content = content,
+            thumbnail = downloadUrl.toString(),
+            isFavorite = false,
+            user = user,
+            createdDate = null
+        )
+
+        blogsRef.document(id).set(blog).await()
+
+        emit(Result.Success(true))
+    }.catch { error->
+        emit(Result.Error(error))
+    }
+
+    fun updateBlog(id: String, title: String, content: String, thumbnail: Uri) = flow {
+        emit(Result.Loading)
+
+        val imageStoragRef = storageRef.child("images/$id.jpg")
+        val downloadUrl =  imageStoragRef.putFile(thumbnail).await().storage.downloadUrl.await()
+
+        blogsRef.document(id).update(
+            "title", title, "content", content, "thumbnail", downloadUrl.toString()
+        ).await()
+
+        emit(Result.Success(true))
+    }.catch { error->
+        emit(Result.Error(error))
+    }
+
+
+    fun deleteBlog(id: String) = flow {
+        emit(Result.Loading)
+
+        storageRef.child("images/$id.jpg").delete().await()
+        blogsRef.document(id).delete().await()
+        emit(Result.Success(true))
+    }.catch { error->
+        emit(Result.Error(error))
+    }
 }
