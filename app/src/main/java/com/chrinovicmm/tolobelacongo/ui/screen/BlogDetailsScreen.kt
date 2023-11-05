@@ -65,6 +65,8 @@ fun BlogDetailsScreen(
 
 }
 
+//1:54:13
+
 @Preview(showBackground = true)
 @Composable
 fun BlogDetailsScreenPreview(){
