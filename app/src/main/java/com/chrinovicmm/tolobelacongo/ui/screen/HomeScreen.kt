@@ -1,8 +1,5 @@
 package com.chrinovicmm.tolobelacongo.ui.screen
 
-import android.app.Notification.Action
-import android.graphics.drawable.Icon
-import android.net.wifi.hotspot2.pps.HomeSp
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,9 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -56,7 +51,8 @@ import com.chrinovicmm.tolobelacongo.ui.theme.TolobelaCongoTheme
 fun HomeScreen(
     currentUser: User?,
     blogs : List<Blog>,
-    signOut : ()->Unit
+    signOut : ()->Unit,
+    navigateToBlogDetailsScreen: (Blog)-> Unit
 ){
 
     var isDropdownMenuExpanded by remember {
@@ -164,7 +160,9 @@ fun HomeScreen(
                 ){
                     items(blogs){blog->
                         BlogItemUI(
-                            blog, {}
+                            blog = blog, blogDetailsScreen = {
+                                navigateToBlogDetailsScreen(blog)
+                            }
                         )
                     }
 
@@ -181,7 +179,8 @@ fun HomeScreenPrview(){
     TolobelaCongoTheme{
         HomeScreen(
             currentUser = null,
-            blogs = emptyList()
+            blogs = emptyList(),
+            {}
         ){}
 
     }
