@@ -1,15 +1,27 @@
 package com.chrinovicmm.tolobelacongo.ui.screen
 
 import android.app.Notification.Action
+import android.graphics.drawable.Icon
+import android.net.wifi.hotspot2.pps.HomeSp
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -39,6 +52,10 @@ fun HomeScreen(
 
     var isDropdownMenuExpanded by remember {
         mutableStateOf(false)
+    }
+
+    var query by remember {
+        mutableStateOf("")
     }
 
     Scaffold(
@@ -83,13 +100,39 @@ fun HomeScreen(
             )
         }
     ) {paddingValues ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            contentAlignment = Alignment.Center
         ){
-            Text(text = "Contenu")
+            OutlinedTextField(
+                value = query,
+                onValueChange ={text->
+                    query = text
+                },
+                modifier = Modifier
+                    .padding(24.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(50),
+                placeholder = { Text(text = "Rechercher...") },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search icon")
+                },
+                trailingIcon = {
+                    AnimatedVisibility(visible = query.isNotEmpty()) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowForward,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
         }
     }
+}
+
+@Preview
+@Composable
+fun HomeScreenPrview(){
+    //HomeScreen(currentUser = null)
 }
