@@ -1,6 +1,5 @@
 package com.chrinovicmm.tolobelacongo.ui.screen
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
@@ -23,6 +21,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,6 +30,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -86,7 +89,7 @@ fun BlogDetailsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-        ){
+        ) {
             Card(
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
@@ -109,7 +112,7 @@ fun BlogDetailsScreen(
                     .clip(CircleShape)
                     .background(Color.LightGray)
                     .align(Alignment.BottomEnd)
-            ){
+            ) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Filled.Favorite,
@@ -118,11 +121,22 @@ fun BlogDetailsScreen(
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = Color.Gray)){
+                    append("Avis de: ")
+                }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
+                    append(blogUser)
+                }
+            },
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        Spacer(modifier = Modifier)
+
 
     }
 
