@@ -21,6 +21,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -108,10 +109,10 @@ fun BlogDetailsScreen(
 
             Box(
                 modifier = Modifier
-                    .padding(end = 32.dp)
+                    .padding(start = 32.dp)
                     .clip(CircleShape)
                     .background(Color.LightGray)
-                    .align(Alignment.BottomEnd)
+                    .align(Alignment.BottomStart)
             ) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
@@ -135,7 +136,20 @@ fun BlogDetailsScreen(
             },
             modifier = Modifier.padding(horizontal = 16.dp)
         )
-        Spacer(modifier = Modifier)
+        Spacer(modifier = Modifier.padding(16.dp))
+        Text(
+            text = blogTitle!!,
+            modifier = Modifier
+                .padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.headlineLarge
+        )
+        Spacer(modifier = Modifier.padding(16.dp))
+        Text(
+            text = blogContent!!,
+            modifier = Modifier
+                .padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
 
 
     }
