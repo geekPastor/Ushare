@@ -1,5 +1,6 @@
 package com.chrinovicmm.tolobelacongo.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -17,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.chrinovicmm.tolobelacongo.ui.screen.BlogDetailsScreen
 import com.chrinovicmm.tolobelacongo.ui.screen.HomeScreen
 import com.chrinovicmm.tolobelacongo.ui.screen.SignInScreen
 import com.chrinovicmm.tolobelacongo.ui.theme.TolobelaCongoTheme
@@ -33,6 +35,7 @@ class MainActivity : ComponentActivity() {
 
     @Inject lateinit var googleAuthUiHelper: GoogleAuthUiHelper
     @Inject lateinit var oneTapClient : SignInClient
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -108,6 +111,9 @@ class MainActivity : ComponentActivity() {
                                                 "?username=${uiState.currentUser}" +
                                                 "?thumbnail=$encodeUrl"
                                     )
+                                },
+                                navigateToUpdateBogScreen = {
+                                    navController.navigate("blog_update")
                                 }
 
                             )
@@ -121,6 +127,43 @@ class MainActivity : ComponentActivity() {
                                 navArgument(name = "title", builder = {nullable = true}),
                                 navArgument(name = "content", builder = {nullable = true}),
                                 navArgument(name = "username", builder = {nullable = true}),
+                                navArgument(name = "thumbnail", builder = {nullable = true})
+                            )
+                        ){backStackEntry->
+                            val id = backStackEntry.arguments?.getString("id")
+                            val title = backStackEntry.arguments?.getString("title")
+                            val content = backStackEntry.arguments?.getString("content")
+                            val username = backStackEntry.arguments?.getString("username")
+                            val thumbnail = backStackEntry.arguments?.getString("thumbnail")
+
+                            val encodedUrl = URLEncoder.encode(thumbnail, "UTF-8")
+
+
+                                BlogDetailsScreen(
+                                    blogTitle = title,
+                                    blogContent = content,
+                                    blogThumbnail = thumbnail,
+                                    blogUser = username!!,
+                                    onBackPressed = {
+                                        navController.popBackStack()
+                                    },
+                                    onEditClicked = {
+                                                    navController.navigate("blog_update?id=$id?title=$title?content=$content?thumbnail=$encodedUrl")
+                                    },
+                                    onDeleteClicked = {
+                                        viewModel.onDeleteBlog(id!!)
+                                        navController.popBackStack()
+                                    }
+                                )
+
+                        }
+
+                        composable(
+                            route = "blog_update?id={id}?title={title}?content={content}?thumbnail={thumbnail}",
+                            arguments = listOf(
+                                navArgument(name = "id", builder = {nullable = true}),
+                                navArgument(name = "title", builder = {nullable = true}),
+                                navArgument(name = "content", builder = {nullable = true}),
                                 navArgument(name = "thumbnail", builder = {nullable = true})
                             )
                         ){

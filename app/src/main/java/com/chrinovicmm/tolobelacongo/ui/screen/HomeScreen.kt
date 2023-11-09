@@ -16,10 +16,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -52,7 +54,8 @@ fun HomeScreen(
     currentUser: User?,
     blogs : List<Blog>,
     signOut : ()->Unit,
-    NavigateToBlogDetailsScreen: (Blog)-> Unit
+    NavigateToBlogDetailsScreen: (Blog)-> Unit,
+    navigateToUpdateBogScreen: ()->Unit
 ){
 
     var isDropdownMenuExpanded by remember {
@@ -103,6 +106,14 @@ fun HomeScreen(
 
                 }
             )
+        },
+
+        floatingActionButton = {
+            FloatingActionButton(onClick = navigateToUpdateBogScreen){
+                Icon(
+                    imageVector = Icons.Filled.Create,
+                    contentDescription = null)
+            }
         }
     ) {paddingValues ->
         Column(
@@ -180,6 +191,7 @@ fun HomeScreenPrview(){
         HomeScreen(
             currentUser = null,
             blogs = emptyList(),
+            {},
             {}
         ){}
 
