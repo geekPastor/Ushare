@@ -109,7 +109,9 @@ fun HomeScreen(
         },
 
         floatingActionButton = {
-            FloatingActionButton(onClick = navigateToUpdateBogScreen){
+            FloatingActionButton(
+                onClick = navigateToUpdateBogScreen
+            ){
                 Icon(
                     imageVector = Icons.Filled.Create,
                     contentDescription = null)
