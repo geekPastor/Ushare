@@ -23,6 +23,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -53,6 +54,7 @@ import com.chrinovicmm.tolobelacongo.ui.theme.TolobelaCongoTheme
 fun HomeScreen(
     currentUser: User?,
     blogs : List<Blog>,
+    isLoading : Boolean,
     signOut : ()->Unit,
     NavigateToBlogDetailsScreen: (Blog)-> Unit,
     navigateToUpdateBogScreen: ()->Unit
@@ -95,7 +97,12 @@ fun HomeScreen(
                     DropdownMenu(expanded = isDropdownMenuExpanded, onDismissRequest = { isDropdownMenuExpanded = false }) {
                         DropdownMenuItem(
                             text = { 
-                                   Text(text = "Deconnexion")
+                                   Column(
+                                       horizontalAlignment = Alignment.CenterHorizontally
+                                   ) {
+                                       Text(text = "${currentUser?.userName}")
+                                       Text(text = "Deconnexion")
+                                   }
                             },
                             onClick = {
                                 signOut()
@@ -118,6 +125,9 @@ fun HomeScreen(
             }
         }
     ) {paddingValues ->
+        if (isLoading){
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -193,6 +203,7 @@ fun HomeScreenPrview(){
         HomeScreen(
             currentUser = null,
             blogs = emptyList(),
+            isLoading = false,
             {},
             {}
         ){}

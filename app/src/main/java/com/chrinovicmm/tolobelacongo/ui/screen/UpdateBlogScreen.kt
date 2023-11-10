@@ -187,7 +187,8 @@ fun UpdateBlogScreen(
 
         FloatingActionButton(
             onClick = {
-                      UpdateBlog(title, content, selectedThumbnail)
+                UpdateBlog(title, content, selectedThumbnail)
+
             },
             modifier = Modifier
                 .padding(16.dp)

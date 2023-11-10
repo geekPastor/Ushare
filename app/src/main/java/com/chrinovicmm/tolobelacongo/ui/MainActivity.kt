@@ -1,6 +1,7 @@
 package com.chrinovicmm.tolobelacongo.ui
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.core.net.UriCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -21,6 +23,7 @@ import androidx.navigation.navArgument
 import com.chrinovicmm.tolobelacongo.ui.screen.BlogDetailsScreen
 import com.chrinovicmm.tolobelacongo.ui.screen.HomeScreen
 import com.chrinovicmm.tolobelacongo.ui.screen.SignInScreen
+import com.chrinovicmm.tolobelacongo.ui.screen.UpdateBlogScreen
 import com.chrinovicmm.tolobelacongo.ui.theme.TolobelaCongoTheme
 import com.chrinovicmm.tolobelacongo.util.GoogleAuthUiHelper
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -97,6 +100,7 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(
                                 currentUser = uiState.currentUser,
                                 blogs = uiState.blogs,
+                                isLoading = uiState.isLoading,
                                 signOut = {
                                     viewModel.signOut(oneTapClient)
                                     navController.navigate("signin"){
@@ -166,8 +170,39 @@ class MainActivity : ComponentActivity() {
                                 navArgument(name = "content", builder = {nullable = true}),
                                 navArgument(name = "thumbnail", builder = {nullable = true})
                             )
-                        ){
+                        ){backStackEntry->
+                            val id = backStackEntry.arguments?.getString("id")
+                            val title = backStackEntry.arguments?.getString("title")
+                            val content = backStackEntry.arguments?.getString("content")
+                            val thumbnail = backStackEntry.arguments?.getString("thumbnail")
 
+                            UpdateBlogScreen(
+                                blogTitle = title,
+                                blogContent = content,
+                                thumbnail = thumbnail,
+                                onBackPressed = { navController.popBackStack() },
+                                UpdateBlog = {titleCallBack, contentCallBack, thumbnailCallBack->
+                                    if (id == null){
+                                        viewModel.onAddBlog(
+                                            title = titleCallBack,
+                                            content = contentCallBack,
+                                            thumbnails = Uri.parse(thumbnailCallBack),
+                                            user = uiState.currentUser!!
+                                        )
+                                    }else{
+                                        viewModel.onUpdateBlog(
+                                            id = id,
+                                            title = titleCallBack,
+                                            content = contentCallBack,
+                                            thumbnail = Uri.parse(thumbnailCallBack),
+                                        )
+
+                                    }
+                                    navController.navigate("home"){
+                                        popUpTo("home")
+                                    }
+                                }
+                            )
                         }
                     }
                 }

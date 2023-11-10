@@ -132,10 +132,10 @@ class MainViewModel @Inject constructor(
         id: String,
         title: String,
         content: String,
-        thumbnails: Uri,
+        thumbnail: Uri,
     ){
         viewModelScope.launch {
-            repository.updateBlog(id, title, content, thumbnails).collect{result->
+            repository.updateBlog(id, title, content, thumbnail).collect{result->
                 when(result){
                     is Result.Loading->{
                         uiState.value = uiState.value.copy(isLoading = true)
