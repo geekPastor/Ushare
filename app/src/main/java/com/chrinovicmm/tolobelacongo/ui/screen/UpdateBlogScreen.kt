@@ -243,7 +243,6 @@ fun UpdateBlogScreen(
                 contentDescription = null
             )
         }
-
     }
 }
 

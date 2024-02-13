@@ -105,12 +105,13 @@ class MainActivity : ComponentActivity() {
                                     viewModel.signOut(oneTapClient)
                                 },
                                 NavigateToBlogDetailsScreen = {blog ->
-                                    val encodeUrl = URLEncoder.encode(blog.thumbnail, "UTF-8")
+                                    val imageEncodeUrl = URLEncoder.encode(blog.thumbnail, "UTF-8")
+                                    val pdfEncodedUrl = URLEncoder.encode(blog.pdf, "UTF-8")
                                     navController.navigate(
                                         "blog_details?id=${blog.id}?title=${blog.title}" +
                                                 "?content=${blog.content}" +
                                                 "?username=${uiState.currentUser}" +
-                                                "?thumbnail=$encodeUrl"
+                                                "?thumbnail=$imageEncodeUrl?pdf=$pdfEncodedUrl"
                                     )
                                 },
                                 navigateToUpdateBogScreen = {
