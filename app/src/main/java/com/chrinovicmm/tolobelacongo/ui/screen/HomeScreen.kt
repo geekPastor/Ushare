@@ -30,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,7 +58,8 @@ fun HomeScreen(
     isLoading : Boolean,
     signOut : ()->Unit,
     NavigateToBlogDetailsScreen: (Blog)-> Unit,
-    navigateToUpdateBogScreen: ()->Unit
+    navigateToUpdateBogScreen: ()->Unit,
+    navigateToSigninScreen: ()->Unit
 ){
 
     var isDropdownMenuExpanded by remember {
@@ -66,6 +68,12 @@ fun HomeScreen(
 
     var query by remember {
         mutableStateOf("")
+    }
+
+    LaunchedEffect(key1 = currentUser){
+        if (currentUser == null){
+            navigateToSigninScreen()
+        }
     }
 
     Scaffold(
@@ -125,14 +133,15 @@ fun HomeScreen(
             }
         }
     ) {paddingValues ->
-        if (isLoading){
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
         ){
+            if (isLoading){
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
+
             OutlinedTextField(
                 value = query,
                 onValueChange ={text->
@@ -171,7 +180,7 @@ fun HomeScreen(
                         )
 
                         Text(
-                            text = "Pas d'avis disponible",
+                            text = "Pas de ressources disponible",
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -204,6 +213,7 @@ fun HomeScreenPrview(){
             currentUser = null,
             blogs = emptyList(),
             isLoading = false,
+            {},
             {},
             {}
         ){}

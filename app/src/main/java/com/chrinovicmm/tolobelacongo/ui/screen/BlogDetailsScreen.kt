@@ -48,6 +48,7 @@ fun BlogDetailsScreen(
     blogTitle: String?,
     blogContent: String?,
     blogThumbnail: String?,
+    blogPdf: String?,
     blogUser: String,
     onBackPressed: ()-> Unit,
     onEditClicked: ()->Unit,
@@ -165,6 +166,7 @@ fun BlogDetailsScreenPreview(){
         BlogDetailsScreen(
             "Exemple de titre",
             "Exemple de contenu",
+            null,
             null,
             "Chrinovic MM",
             onBackPressed = {},

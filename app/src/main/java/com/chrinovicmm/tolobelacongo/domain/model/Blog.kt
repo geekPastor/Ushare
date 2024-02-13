@@ -8,6 +8,7 @@ data class Blog(
     val title : String = "",
     val content : String = "",
     val thumbnail: String = "",
+    var pdf: String = "",
     val isFavorite: Boolean = false,
     val user: User? = null,
     @ServerTimestamp val createdDate: Date? = null

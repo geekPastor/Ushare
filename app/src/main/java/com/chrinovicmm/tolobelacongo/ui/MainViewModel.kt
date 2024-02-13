@@ -1,7 +1,6 @@
 package com.chrinovicmm.tolobelacongo.ui
 
 import android.net.Uri
-import androidx.compose.runtime.MovableContent
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,6 @@ import com.chrinovicmm.tolobelacongo.domain.model.User
 import com.chrinovicmm.tolobelacongo.util.Result
 import com.google.android.gms.auth.api.identity.SignInClient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,7 +40,8 @@ class MainViewModel @Inject constructor(
     fun onSignInResult(result: SignInResult){
         uiState.value = uiState.value.copy(
             isSignInSuccessfull = result.data!= null,
-            signInError = result.errorMessage
+            signInError = result.errorMessage,
+            currentUser = result.data
         )
     }
 
@@ -113,10 +112,11 @@ class MainViewModel @Inject constructor(
         title: String,
         content: String,
         thumbnails: Uri,
+        pdf: Uri,
         user: User
     ){
         viewModelScope.launch {
-            repository.addBlog(title, content, thumbnails, user).collect{result->
+            repository.addBlog(title, content, thumbnails,pdf, user).collect{result->
                 when(result){
                     is Result.Loading->{
                         uiState.value = uiState.value.copy(isLoading = true)
@@ -133,9 +133,10 @@ class MainViewModel @Inject constructor(
         title: String,
         content: String,
         thumbnail: Uri,
+        pdf: Uri,
     ){
         viewModelScope.launch {
-            repository.updateBlog(id, title, content, thumbnail).collect{result->
+            repository.updateBlog(id, title, content, thumbnail, pdf).collect{result->
                 when(result){
                     is Result.Loading->{
                         uiState.value = uiState.value.copy(isLoading = true)

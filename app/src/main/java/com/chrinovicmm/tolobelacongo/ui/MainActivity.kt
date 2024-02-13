@@ -103,9 +103,6 @@ class MainActivity : ComponentActivity() {
                                 isLoading = uiState.isLoading,
                                 signOut = {
                                     viewModel.signOut(oneTapClient)
-                                    navController.navigate("signin"){
-                                        popUpTo(0)
-                                    }
                                 },
                                 NavigateToBlogDetailsScreen = {blog ->
                                     val encodeUrl = URLEncoder.encode(blog.thumbnail, "UTF-8")
@@ -118,6 +115,11 @@ class MainActivity : ComponentActivity() {
                                 },
                                 navigateToUpdateBogScreen = {
                                     navController.navigate("blog_update")
+                                },
+                                navigateToSigninScreen = {
+                                    navController.popBackStack(
+                                        route = "signin", inclusive = false
+                                    )
                                 }
 
                             )
@@ -125,13 +127,14 @@ class MainActivity : ComponentActivity() {
 
                         composable(
                             route= "blog_details?id={id}?title={title}?content={content}" +
-                                    "?username={username}?thumbnail={thumbnail}",
+                                    "?username={username}?thumbnail={thumbnail}?pdf={pdf}",
                             arguments = listOf(
                                 navArgument(name = "id", builder = {nullable = true}),
                                 navArgument(name = "title", builder = {nullable = true}),
                                 navArgument(name = "content", builder = {nullable = true}),
                                 navArgument(name = "username", builder = {nullable = true}),
-                                navArgument(name = "thumbnail", builder = {nullable = true})
+                                navArgument(name = "thumbnail", builder = {nullable = true}),
+                                navArgument(name = "pdf", builder = {nullable = true})
                             )
                         ){backStackEntry->
                             val id = backStackEntry.arguments?.getString("id")
@@ -139,8 +142,10 @@ class MainActivity : ComponentActivity() {
                             val content = backStackEntry.arguments?.getString("content")
                             val username = backStackEntry.arguments?.getString("username")
                             val thumbnail = backStackEntry.arguments?.getString("thumbnail")
+                            val pdf = backStackEntry.arguments?.getString("pdf")
 
                             val encodedUrl = URLEncoder.encode(thumbnail, "UTF-8")
+                            val encodedPdfUrl = URLEncoder.encode(pdf, "UTF-8")
 
 
                                 BlogDetailsScreen(
@@ -148,11 +153,12 @@ class MainActivity : ComponentActivity() {
                                     blogContent = content,
                                     blogThumbnail = thumbnail,
                                     blogUser = username!!,
+                                    blogPdf = pdf,
                                     onBackPressed = {
                                         navController.popBackStack()
                                     },
                                     onEditClicked = {
-                                                    navController.navigate("blog_update?id=$id?title=$title?content=$content?thumbnail=$encodedUrl")
+                                                    navController.navigate("blog_update?id=$id?title=$title?content=$content?thumbnail=$encodedUrl?pdf=$encodedPdfUrl")
                                     },
                                     onDeleteClicked = {
                                         viewModel.onDeleteBlog(id!!)
@@ -163,30 +169,34 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            route = "blog_update?id={id}?title={title}?content={content}?thumbnail={thumbnail}",
+                            route = "blog_update?id={id}?title={title}?content={content}?thumbnail={thumbnail}?pdf={pdf}",
                             arguments = listOf(
                                 navArgument(name = "id", builder = {nullable = true}),
                                 navArgument(name = "title", builder = {nullable = true}),
                                 navArgument(name = "content", builder = {nullable = true}),
-                                navArgument(name = "thumbnail", builder = {nullable = true})
+                                navArgument(name = "thumbnail", builder = {nullable = true}),
+                                navArgument(name = "pdf", builder = {nullable = true})
                             )
                         ){backStackEntry->
                             val id = backStackEntry.arguments?.getString("id")
                             val title = backStackEntry.arguments?.getString("title")
                             val content = backStackEntry.arguments?.getString("content")
                             val thumbnail = backStackEntry.arguments?.getString("thumbnail")
+                            val pdf = backStackEntry.arguments?.getString("pdf")
 
                             UpdateBlogScreen(
                                 blogTitle = title,
                                 blogContent = content,
                                 thumbnail = thumbnail,
+                                blogPdf = pdf,
                                 onBackPressed = { navController.popBackStack() },
-                                UpdateBlog = {titleCallBack, contentCallBack, thumbnailCallBack->
+                                UpdateBlog = {titleCallBack, contentCallBack, thumbnailCallBack, pdfCallBack->
                                     if (id == null){
                                         viewModel.onAddBlog(
                                             title = titleCallBack,
                                             content = contentCallBack,
                                             thumbnails = Uri.parse(thumbnailCallBack),
+                                            pdf = Uri.parse(pdfCallBack),
                                             user = uiState.currentUser!!
                                         )
                                     }else{
@@ -195,6 +205,7 @@ class MainActivity : ComponentActivity() {
                                             title = titleCallBack,
                                             content = contentCallBack,
                                             thumbnail = Uri.parse(thumbnailCallBack),
+                                            pdf = Uri.parse(pdfCallBack)
                                         )
 
                                     }

@@ -8,17 +8,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -53,8 +56,10 @@ fun UpdateBlogScreen(
     blogTitle: String?,
     blogContent: String?,
     thumbnail: String?,
+    blogPdf: String?,
+    //onPdfAttach: String,
     onBackPressed: ()->Unit,
-    UpdateBlog: (String, String, String)->Unit
+    UpdateBlog: (String, String, String, String)->Unit
 ){
     
     Box(
@@ -68,6 +73,11 @@ fun UpdateBlogScreen(
             mutableStateOf(thumbnail ?: "")
         }
 
+
+        var selectedPdf by remember {
+            mutableStateOf(blogPdf ?: "")
+        }
+
         var content by remember {
             mutableStateOf(blogContent ?: "")
         }
@@ -76,6 +86,17 @@ fun UpdateBlogScreen(
             contract = ActivityResultContracts.PickVisualMedia(),
             onResult = {uri->
                 selectedThumbnail = uri.toString()
+            }
+        )
+
+        val pdfLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent(),
+            onResult = { uri ->
+                // Manipulation du résultat ici, comme sauvegarder l'URI du fichier PDF
+                if (uri != null) {
+                    // Traitement de l'URI du fichier PDF sélectionné
+                    selectedPdf = uri.toString()
+                }
             }
         )
 
@@ -93,7 +114,7 @@ fun UpdateBlogScreen(
                         )
                     }
             ){
-                if (selectedThumbnail.isEmpty()){
+                if (selectedThumbnail.isEmpty() ){
                     Card(
                         modifier = Modifier
                             .fillMaxSize()
@@ -123,16 +144,39 @@ fun UpdateBlogScreen(
                     )
                 }
 
-                Box(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .align(Alignment.TopStart)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.background)
-                ){
-                    IconButton(onClick = onBackPressed) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            //.align(Alignment.TopStart)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.background)
+                    ){
+                        IconButton(onClick = onBackPressed) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = null
+                            )
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.background)
+                            .size(45.dp)
+                            .clickable {
+                                pdfLauncher.launch("application/pdf")
+                            },
+                        contentAlignment = Alignment.Center
+                    ){
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            imageVector = Icons.Default.Send,
                             contentDescription = null
                         )
                     }
@@ -146,7 +190,7 @@ fun UpdateBlogScreen(
                 },
                 placeholder = {
                     Text(
-                        text = "titre de l'avis",
+                        text = "titre de la ressopurce",
                         style = MaterialTheme.typography.titleLarge
                     )
                 },
@@ -169,7 +213,7 @@ fun UpdateBlogScreen(
                 },
                 placeholder = {
                     Text(
-                        text = "le contenu de l'avis",
+                        text = "Description de la ressource",
                         style = MaterialTheme.typography.bodyLarge
                     )
                 },
@@ -187,7 +231,7 @@ fun UpdateBlogScreen(
 
         FloatingActionButton(
             onClick = {
-                UpdateBlog(title, content, selectedThumbnail)
+                UpdateBlog(title, content, selectedThumbnail, selectedPdf)
 
             },
             modifier = Modifier
@@ -207,6 +251,6 @@ fun UpdateBlogScreen(
 @Composable
 fun UpdateBlogScreenPreview(){
     TolobelaCongoTheme {
-        UpdateBlogScreen("", "", "", {}, {_, _, _->})
+        UpdateBlogScreen("", "", "","", {}, {_, _, _, _->})
     }
 }

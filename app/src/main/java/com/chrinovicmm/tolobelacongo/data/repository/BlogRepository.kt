@@ -69,19 +69,23 @@ class BlogRepository @Inject constructor(
         title: String,
         content: String,
         thumbnail: Uri,
+        pdf: Uri,
         user: User
     ) = flow{
         emit(Result.Loading)
         val id = blogsRef.document().id
 
         val imageStoragRef = storageRef.child("images/$id.jpg")
-        val downloadUrl =  imageStoragRef.putFile(thumbnail).await().storage.downloadUrl.await()
+        val pdfStoragRef = storageRef.child("pdf/$id.pdf")
+        val imageDownloadUrl =  imageStoragRef.putFile(thumbnail).await().storage.downloadUrl.await()
+        val pdfDownloadUrl =  pdfStoragRef.putFile(pdf).await().storage.downloadUrl.await()
 
         val blog = Blog(
             id = id,
             title = title,
             content = content,
-            thumbnail = downloadUrl.toString(),
+            thumbnail = imageDownloadUrl.toString(),
+            pdf = pdfDownloadUrl.toString(),
             isFavorite = false,
             user = user,
             createdDate = null
@@ -95,14 +99,22 @@ class BlogRepository @Inject constructor(
     }
 
     //update bolg item
-    fun updateBlog(id: String, title: String, content: String, thumbnail: Uri) = flow {
+    fun updateBlog(id: String, title: String, content: String, thumbnail: Uri, pdf: Uri) = flow {
         emit(Result.Loading)
 
         val imageStoragRef = storageRef.child("images/$id.jpg")
-        val downloadUrl =  imageStoragRef.putFile(thumbnail).await().storage.downloadUrl.await()
+        val pdfStorageRef = storageRef.child("pdf/$id.pdf")
+        val imageDownloadUrl =  imageStoragRef.putFile(thumbnail).await().storage.downloadUrl.await()
+        val pdfDownloadUrl = pdfStorageRef.putFile(pdf).await().storage.downloadUrl.await()
 
         blogsRef.document(id).update(
-            "title", title, "content", content, "thumbnail", downloadUrl.toString()
+            "title",
+            title,
+            "content",
+            content,
+            "thumbnail",
+            imageDownloadUrl.toString(),
+            pdfDownloadUrl.toString()
         ).await()
 
         emit(Result.Success(true))
@@ -114,8 +126,8 @@ class BlogRepository @Inject constructor(
         //delete Blog item
     fun deleteBlog(id: String) = flow {
         emit(Result.Loading)
-
         storageRef.child("images/$id.jpg").delete().await()
+        storageRef.child("pdf/$id.pdf").delete().await()
         blogsRef.document(id).delete().await()
         emit(Result.Success(true))
     }.catch { error->
