@@ -57,7 +57,6 @@ fun UpdateBlogScreen(
     blogContent: String?,
     thumbnail: String?,
     blogPdf: String?,
-    //onPdfAttach: String,
     onBackPressed: ()->Unit,
     UpdateBlog: (String, String, String, String)->Unit
 ){

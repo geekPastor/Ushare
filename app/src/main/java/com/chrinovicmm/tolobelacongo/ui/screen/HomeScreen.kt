@@ -138,11 +138,11 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
         ){
-            if (isLoading){
+            if(isLoading){
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
 
-            OutlinedTextField(
+            /*OutlinedTextField(
                 value = query,
                 onValueChange ={text->
                     query = text
@@ -163,7 +163,7 @@ fun HomeScreen(
                         )
                     }
                 }
-            )
+            )*/
 
             if (blogs.isEmpty()){
                 Box(

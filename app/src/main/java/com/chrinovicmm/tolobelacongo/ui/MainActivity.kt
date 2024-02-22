@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(){
 
     @Inject lateinit var googleAuthUiHelper: GoogleAuthUiHelper
     @Inject lateinit var oneTapClient : SignInClient
@@ -108,10 +108,11 @@ class MainActivity : ComponentActivity() {
                                     val imageEncodedUrl = URLEncoder.encode(blog.thumbnail, "UTF-8")
                                     val pdfEncodedUrl = URLEncoder.encode(blog.pdf, "UTF-8")
                                     navController.navigate(
-                                        "blog_details?id=${blog.id}?title=${blog.title}" +
-                                                "?content=${blog.content}" +
-                                                "?username=${uiState.currentUser}" +
-                                                "?thumbnail=$imageEncodedUrl?pdf=$pdfEncodedUrl"
+                                        "blog_details?id=${blog.id}&title=${blog.title}" +
+                                                "&content=${blog.content}" +
+                                                "&username=${uiState.currentUser?.userName}" +
+                                                "&thumbnail=$imageEncodedUrl" +
+                                                "&pdf=$pdfEncodedUrl"
                                     )
                                 },
                                 navigateToUpdateBogScreen = {
@@ -122,13 +123,11 @@ class MainActivity : ComponentActivity() {
                                         route = "signin", inclusive = false
                                     )
                                 }
-
                             )
                         }
 
                         composable(
-                            route= "blog_details?id={id}?title={title}?content={content}" +
-                                    "?username={username}?thumbnail={thumbnail}?pdf={pdf}",
+                            route = "blog_details?id={id}&title={title}&content={content}&username={username}&thumbnail={thumbnail}&pdf={pdf}",
                             arguments = listOf(
                                 navArgument(name = "id", builder = {nullable = true}),
                                 navArgument(name = "title", builder = {nullable = true}),
@@ -170,7 +169,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            route = "blog_update?id={id}?title={title}?content={content}?thumbnail={thumbnail}?pdf={pdf}",
+                            route = "blog_update?id={id}&title={title}&content={content}&thumbnail={thumbnail}&pdf={pdf}",
                             arguments = listOf(
                                 navArgument(name = "id", builder = {nullable = true}),
                                 navArgument(name = "title", builder = {nullable = true}),
