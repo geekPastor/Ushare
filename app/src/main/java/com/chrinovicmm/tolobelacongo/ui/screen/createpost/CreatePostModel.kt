@@ -6,7 +6,6 @@ import com.chrinovicmm.tolobelacongo.data.repository.CategoryRepository
 import com.chrinovicmm.tolobelacongo.data.repository.PostRepository
 import com.chrinovicmm.tolobelacongo.domain.model.TopicCategory
 import com.chrinovicmm.tolobelacongo.domain.model.TopicPost
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
