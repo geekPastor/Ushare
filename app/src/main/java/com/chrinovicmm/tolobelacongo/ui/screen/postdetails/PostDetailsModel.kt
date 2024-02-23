@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.chrinovicmm.tolobelacongo.data.repository.CommentRepository
 import com.chrinovicmm.tolobelacongo.domain.model.TopicComment
+import com.chrinovicmm.tolobelacongo.domain.model.TopicPost
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -36,5 +37,11 @@ class PostDetailsModel(
         }
     }
 
-
+    fun createComment(topicComment: TopicComment, topicPost: TopicPost){
+        screenModelScope.launch {
+            try {
+                commentRepository.createComment(topicComment, topicPost)
+            }catch (_: Exception){}
+        }
+    }
 }
