@@ -8,6 +8,6 @@ data class TopicComment(
     val message: String = "",
     val createdAt: Date? = null,
     val userId: String= "",
-    val userName: String,
-    val userProfile: String
+    val userName: String = "",
+    val userProfile: String = ""
 )

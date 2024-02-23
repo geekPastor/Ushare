@@ -7,7 +7,6 @@ import com.chrinovicmm.tolobelacongo.domain.model.TopicComment
 import com.chrinovicmm.tolobelacongo.domain.model.TopicPost
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class PostDetailsModel(

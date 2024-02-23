@@ -40,8 +40,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.chrinovicmm.tolobelacongo.ui.components.CategoryItem
 import com.chrinovicmm.tolobelacongo.ui.components.PostItem
 import com.chrinovicmm.tolobelacongo.ui.screen.createpost.CreatePostScreen
-import com.chrinovicmm.tolobelacongo.ui.screen.postdetails.PostDetailsScreen
-import java.util.Locale.Category
+import com.chrinovicmm.tolobelacongo.ui.screen.postdetails.PostDetailScreen
 
 class ForumScreen : Screen{
     @Composable
@@ -139,7 +138,7 @@ class ForumScreen : Screen{
                            PostItem(
                                post = item,
                                onClick = {
-                                   navigator.push(PostDetailsScreen(item))
+                                   navigator.push(PostDetailScreen(item))
                                },
                                modifier = Modifier.padding(horizontal = 16.dp)
                            )
